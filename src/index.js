@@ -52,9 +52,9 @@ class Game extends React.Component {
     super(props)
     this.state = {
       history: [{
-        squares: Array(9).fill(null)
+        squares: Array(9).fill(null),
+        xIsNext: true
       }],
-      xIsNext: true
     }
   }
   
@@ -66,22 +66,21 @@ class Game extends React.Component {
     if (calculateWinner(squares) || squares[i]){
       return;
     }
-    squares[i] = this.state.xIsNext ? 'X' : 'O'
+    squares[i] = current.xIsNext ? 'X' : 'O'
     this.setState({
       history: history.concat([{
-        squares: squares
+        squares: squares,
+        xIsNext: !current.xIsNext
       }]),
-      xIsNext: !this.state.xIsNext
     })
   }
 
   jumpTo(move){
     const history = this.state.history
     history.length = move + 1
-    
+
     this.setState({
-      history: history,
-      xIsNext: this.state.xIsNext
+      history: history
     })
   }
 
@@ -105,7 +104,7 @@ class Game extends React.Component {
     if (winner){
       status = 'Winner: ' + winner
     } else {
-      status = 'Next Player: ' + (this.state.xIsNext ? 'X' : 'O')
+      status = 'Next Player: ' + (current.xIsNext ? 'X' : 'O')
     }
     
     return (
